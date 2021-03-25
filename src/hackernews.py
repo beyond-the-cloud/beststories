@@ -4,7 +4,7 @@ import logging
 import sys
 
 logger = logging.getLogger("beststories-logger")
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 response = requests.get('https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty')
 ids = json.loads(response.text)
@@ -14,5 +14,5 @@ producer = KafkaProducer(bootstrap_servers='kafka-0.kafka-headless.default.svc.c
 
 for id in ids:
   producer.send('beststories', str(id).encode())
-  logger.info("kafka producer sending id: " + str(id))
+  logger.info("kafka producer sending story id: " + str(id))
   producer.flush()
