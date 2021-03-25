@@ -11,10 +11,10 @@ logger = logging.getLogger("beststories-logger")
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # init kafka producer
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers='kafka-0.kafka-headless.default.svc.cluster.local:9092')
 
 # Create a metric to track time spent and requests made.
-REQUEST_TIME = Summary('beststories_kafka_duration', 'Time kafka producer spent sending messages')
+REQUEST_TIME = Summary('beststories_kafka_duration', 'Time beststories kafka producer spent sending messages')
 counter = Counter('beststories_hackernews_counter', 'Times of beststories visiting HackerNews')
 
 # Decorate function with metric.
@@ -22,7 +22,7 @@ counter = Counter('beststories_hackernews_counter', 'Times of beststories visiti
 def send_id_to_kafka(id):
     producer.send('beststories', str(id).encode())
     # add logs
-    logger.info("kafka producer sending story id: " + str(id))
+    logger.info("kafka producer sending beststories id: " + str(id))
     producer.flush()
 
 if __name__ == '__main__':
@@ -40,5 +40,3 @@ if __name__ == '__main__':
   # send id with kafka producer
   for id in ids:
     send_id_to_kafka(id)
-
-  time.sleep(6)
