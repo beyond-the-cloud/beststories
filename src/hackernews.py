@@ -19,10 +19,10 @@ kafka_server = os.environ.get('KAFKA_HOST') + ':' + os.environ.get('KAFKA_PORT')
 producer = KafkaProducer(bootstrap_servers=kafka_server)
 
 # test if Istio SideCar is ready
-while(requests.get('http://localhost:15021/healthz/ready').status_code != 200) {
+while requests.get('http://localhost:15021/healthz/ready').status_code != 200:
   logger.info("Waiting for SideCar get ready...")
   time.sleep(1)
-}
+
 logger.info("SideCar is running, start getting stories")
 
 # Create a metric to track time spent and requests made.
@@ -54,8 +54,7 @@ if __name__ == '__main__':
   # push metrics to pushgateway
   push_to_gateway(PUSH_GATEWAY, job='beststories_cronjob', registry=REGISTRY)
 
-logger.info("Getting stories completed")
-
-# Stop Istio SideCar
-res = requests.post('http://localhost:15020/quitquitquit')
-logger.info("Stopping SiceCar: " + res.text)
+  logger.info("Getting stories completed")
+  # Stop Istio SideCar
+  res = requests.post('http://localhost:15020/quitquitquit')
+  logger.info("Stopping SiceCar: " + res.text)
