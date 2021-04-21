@@ -16,7 +16,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # init kafka producer
 kafka_server = os.environ.get('KAFKA_HOST') + ':' + os.environ.get('KAFKA_PORT')
-producer = KafkaProducer(bootstrap_servers=kafka_server)
+# producer = KafkaProducer(bootstrap_servers=kafka_server)
+producer = KafkaProducer(bootstrap_servers='kafka-0.kafka-headless.default.svc.cluster.local:9092')
 
 # test if Istio SideCar is ready
 while requests.get('http://localhost:15021/healthz/ready').status_code != 200:
